@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="848" systemVersion="11A511" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="FavoriteAddress" representedClassName="FavoriteAddress">
+        <attribute name="address" optional="YES" attributeType="String"/>
+        <attribute name="index" optional="YES" attributeType="Integer 16" defaultValueString="0"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="RecentAddress" representedClassName="RecentAddress">
+        <attribute name="address" optional="YES" attributeType="String"/>
+        <attribute name="date" optional="YES" attributeType="Date"/>
+    </entity>
+    <entity name="RecentSearch">
+        <attribute name="date" optional="YES" attributeType="Date"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+    </entity>
+    <elements>
+        <element name="FavoriteAddress" positionX="-531" positionY="-171" width="128" height="90"/>
+        <element name="RecentAddress" positionX="-36" positionY="18" width="128" height="75"/>
+        <element name="RecentSearch" positionX="-288" positionY="-90" width="128" height="75"/>
+    </elements>
+</model>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PreferenceSpecifiers</key>
+	<array>
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string></string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>Default Map Type</string>
+			<key>Key</key>
+			<string>defaultMapType</string>
+			<key>Titles</key>
+			<array>
+				<string>Standard</string>
+				<string>Hybrid</string>
+			</array>
+			<key>Values</key>
+			<array>
+				<true/>
+				<false/>
+			</array>
+			<key>DefaultValue</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string># Of Recent Addresses Stored</string>
+			<key>Key</key>
+			<string>recentAddressNumber</string>
+			<key>Titles</key>
+			<array>
+				<string>5</string>
+				<string>10</string>
+				<string>20</string>
+			</array>
+			<key>Values</key>
+			<array>
+				<integer>5</integer>
+				<integer>10</integer>
+				<integer>20</integer>
+			</array>
+			<key>DefaultValue</key>
+			<integer>10</integer>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string># Of Recent Searches Stored</string>
+			<key>Key</key>
+			<string>recentSearchNumber</string>
+			<key>Titles</key>
+			<array>
+				<string>5</string>
+				<string>10</string>
+				<string>20</string>
+			</array>
+			<key>Values</key>
+			<array>
+				<integer>5</integer>
+				<integer>10</integer>
+				<integer>20</integer>
+			</array>
+			<key>DefaultValue</key>
+			<integer>10</integer>
+		</dict>
+	</array>
+	<key>StringsTable</key>
+	<string>Root</string>
+	<key>Title</key>
+	<string>StuffNearMe Settings</string>
+</dict>
+</plist>
