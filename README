@@ -1,0 +1,4 @@
+To run in XCode, make sure you have XCode 4.2 and the iOS 5 SDK. 
+
+To open, just open the StuffNearMe.xcodeproj file in the home directory and everything should load correctly.
+
