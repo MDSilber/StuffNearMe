@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
 
-#import "ListViewController.h"
+#import "PlaceTypeListViewController.h"
 #import "PlacesListViewController.h"
 #import "StuffNearMeAppDelegate.h"
 #import "AboutViewController.h"
@@ -35,15 +35,16 @@
     int placeSelection;
     BOOL placeSelected;
     BOOL keyboardOnScreen;
-    ListViewController *listView;
+    PlaceTypeListViewController *listView;
     PlacesListViewController *placesListView;
     StuffNearMeAppDelegate *mainDelegate;
-    CLLocationManager *getAddressGPS;
     id delegate;
     UIImage *goImage;
     NSString *goName;
     NSManagedObjectContext *managedObjectContext;
     ActivityIndicatorViewController *loading;
+    CLLocationCoordinate2D currentLocation;
+    CLLocationManager *locationManager;
 }
 
 @property (nonatomic, retain) IBOutlet UISlider *rangeSlider;
@@ -54,11 +55,10 @@
 @property (nonatomic, retain) IBOutlet UITextField *locationTextField;
 @property (nonatomic, retain) IBOutlet UITextField *searchTextField;
 @property (nonatomic, retain) IBOutlet UIButton *goToList;
-@property (nonatomic, retain) ListViewController *listView;
+@property (nonatomic, retain) PlaceTypeListViewController *listView;
 @property (nonatomic, retain) PlacesListViewController *placesListView;
 @property (nonatomic, retain) IBOutlet UILabel *currentSelectionLabel;
 @property (nonatomic, retain) StuffNearMeAppDelegate *mainDelegate;
-@property (nonatomic, retain) CLLocationManager *getAddressGPS;
 @property (nonatomic, assign) id delegate;
 
 -(IBAction)rangeChanged:(id)sender;

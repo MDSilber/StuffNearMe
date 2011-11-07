@@ -35,7 +35,6 @@
 @synthesize placesListView;
 @synthesize currentSelectionLabel;
 @synthesize mainDelegate;
-@synthesize getAddressGPS;
 @synthesize delegate;
 //@synthesize recentAddressDelegate;
 
@@ -53,10 +52,10 @@
     [searchTextField release];
     [currentSelectionLabel release];
     [mainDelegate release];
-    [getAddressGPS release];
     [delegate release];
     [managedObjectContext release];
     [loading release];
+    [locationManager release];
     
     if(placesListView != nil)
     {
@@ -83,13 +82,18 @@
     
     
     mainDelegate = (StuffNearMeAppDelegate *)[[UIApplication sharedApplication] delegate];
-    if((int)[mainDelegate tempPlace] != -1 && placeSelected)
+//    if((int)[mainDelegate tempPlace] != -1 && placeSelected)
+//    {
+//        [currentSelectionLabel setText:[NSString stringWithFormat:@"Current Selection: %@",[placesList objectAtIndex:(unsigned int)[mainDelegate tempPlace]]]];
+//    }
+//    else
+//    {
+//        [currentSelectionLabel setText:@"Current Selection: none"];
+//    }
+    
+    if((int)[mainDelegate tempPlace] != -1)
     {
-        [currentSelectionLabel setText:[NSString stringWithFormat:@"Current Selection: %@",[placesList objectAtIndex:(unsigned int)[mainDelegate tempPlace]]]];
-    }
-    else
-    {
-        [currentSelectionLabel setText:@"Current Selection: none"];
+        [searchTextField setText:[placesList objectAtIndex:(unsigned int)[mainDelegate tempPlace]]];
     }
     
     if([[locationTextField text] length] == 0)
@@ -103,10 +107,14 @@
         goName = @"TA";
     }
     
+    [locationManager startUpdatingLocation];
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
+    
+    //Hides label
+    //[currentSelectionLabel setHidden:YES];
     if(![StuffNearMeAppDelegate connectedToInternet])
     {
         UIAlertView *noInternetAlert = [[UIAlertView alloc] initWithTitle:@"No Internet Connection" 
@@ -134,6 +142,12 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toggleKeyboardOnScreen) name:UIKeyboardDidShowNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toggleKeyboardOnScreen) name:UIKeyboardDidHideNotification object:nil];
     }
+    
+    locationManager = [[CLLocationManager alloc] init];
+    [locationManager setDelegate:self];
+    [locationManager setDesiredAccuracy:kCLLocationAccuracyBest];
+    [locationManager setDistanceFilter:kCLDistanceFilterNone];
+    [locationManager startUpdatingLocation];
     
     return self;
 }
@@ -204,12 +218,12 @@
 
 -(void)viewDidDisappear:(BOOL)animated
 {
-    NSLog(@"This jawn called.");
     if([[loading view] superview])
     {
         [[loading view] removeFromSuperview];
     }
 
+    [locationManager stopUpdatingLocation];
     [super viewDidDisappear:YES];
 }
 - (void)viewDidUnload
@@ -256,6 +270,8 @@
              
          }
                          completion:NULL];
+        
+
     }
 }
 
@@ -332,20 +348,12 @@
     
     if([goName isEqualToString:@"CL"])
     {
-        CLLocationManager *locationManager = [[CLLocationManager alloc] init];
-        [locationManager setDelegate:self];
-        [locationManager setDesiredAccuracy:kCLLocationAccuracyBest];
-        [locationManager setDistanceFilter:kCLDistanceFilterNone];
-        [locationManager startUpdatingLocation];
-        
-        CLLocation *currentLocation = [locationManager location];
-        CLLocationCoordinate2D currentCoordinate = [currentLocation coordinate];
-        
-        if([[searchTextField text] length] == 0)
+        //if([[searchTextField text] length] == 0)
+        if([placesList containsObject:[searchTextField text]])
         {
-            URL = [NSString stringWithFormat:@"%@%f%@%f%@%d%@%@%@",PlacesURLOne,currentCoordinate.latitude, @",", currentCoordinate.longitude,PlacesURLTwo,range,PlacesURLThree,[googlePlaces objectAtIndex:(unsigned int)[mainDelegate tempPlace]],PlacesURLFour];
+            URL = [NSString stringWithFormat:@"%@%f%@%f%@%d%@%@%@",PlacesURLOne,currentLocation.latitude, @",", currentLocation.longitude,PlacesURLTwo,range,PlacesURLThree,[googlePlaces objectAtIndex:(unsigned int)[mainDelegate tempPlace]],PlacesURLFour];
 
-            placesListView = [[PlacesListViewController alloc] initWithStyle:UITableViewStylePlain andURL:URL andCoordinate:currentCoordinate andPlaceType:(NSString *)[[placesList objectAtIndex:(unsigned int)[mainDelegate tempPlace]] lowercaseString] andRange:range/1600];
+            placesListView = [[PlacesListViewController alloc] initWithStyle:UITableViewStylePlain andURL:URL andCoordinate:currentLocation andPlaceType:(NSString *)[[placesList objectAtIndex:(unsigned int)[mainDelegate tempPlace]] lowercaseString] andRange:range/1600];
             
             placeSelection = [listView selectedPlaceIndex];
             
@@ -378,9 +386,9 @@
             //NSLog(@"Latitude: %f",currentCoordinate.latitude);
             //NSLog(@"Longitude: %f",currentCoordinate.longitude);
             
-            URL = [NSString stringWithFormat:@"%@%@%@%f%@%f%@%d%@",AutocompleteURLOne,[searchTextField text],AutocompleteURLTwo,currentCoordinate.latitude,@",",currentCoordinate.longitude,AutocompleteURLThree,range,AutocompleteURLFour];
+            URL = [NSString stringWithFormat:@"%@%@%@%f%@%f%@%d%@",AutocompleteURLOne,[searchTextField text],AutocompleteURLTwo,currentLocation,@",",currentLocation,AutocompleteURLThree,range,AutocompleteURLFour];
             
-            placesListView = [[PlacesListViewController alloc] initWithStyle:UITableViewStylePlain andURL:URL andCoordinate:currentCoordinate andPlaceType:nil andRange:range/1600];
+            placesListView = [[PlacesListViewController alloc] initWithStyle:UITableViewStylePlain andURL:URL andCoordinate:currentLocation andPlaceType:nil andRange:range/1600];
             [placesListView setTitle:@"Results"];
             
             [[self navigationController] pushViewController:placesListView animated:YES];
@@ -425,7 +433,8 @@
                  return;
              }
              
-             if([[searchTextField text] length] == 0)
+             //if([[searchTextField text] length] == 0)
+             if([placesList containsObject:[searchTextField text]])
              {
                  //NSLog(@"Inputted Address, No Search");
                  URL = [NSString stringWithFormat:@"%@%f%@%f%@%d%@%@%@",PlacesURLOne,latitude, @",", longitude,PlacesURLTwo,range,PlacesURLThree,[googlePlaces objectAtIndex:(unsigned int)[mainDelegate tempPlace]],PlacesURLFour];
@@ -474,7 +483,7 @@
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
 {
-    //NSLog(@"Location: %@", [newLocation description]);
+    currentLocation = newLocation.coordinate;
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
@@ -488,7 +497,7 @@
     
     if(!listView)
     {
-        listView = [[ListViewController alloc] init];
+        listView = [[PlaceTypeListViewController alloc] init];
     }
     [listView setTitle:@"Place Types"];
     

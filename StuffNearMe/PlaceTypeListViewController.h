@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ListViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource>
+@interface PlaceTypeListViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource>
 {
     NSIndexPath *lastIndexPath;
     NSArray *placesList;

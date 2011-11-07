@@ -10,12 +10,13 @@
 		280A57D913F382FB00DF3466 /* Establishment.png in Resources */ = {isa = PBXBuildFile; fileRef = 280A57D813F382FB00DF3466 /* Establishment.png */; };
 		282B8F5813E71D8200A0CD1A /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 282B8F5013E71D8200A0CD1A /* AboutViewController.xib */; };
 		282B8F5913E71D8200A0CD1A /* DetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 282B8F5113E71D8200A0CD1A /* DetailsViewController.xib */; };
-		282B8F5A13E71D8200A0CD1A /* ListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 282B8F5213E71D8200A0CD1A /* ListViewController.xib */; };
+		282B8F5A13E71D8200A0CD1A /* PlaceTypeListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 282B8F5213E71D8200A0CD1A /* PlaceTypeListViewController.xib */; };
 		282B8F5B13E71D8200A0CD1A /* OnePlaceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 282B8F5313E71D8200A0CD1A /* OnePlaceViewController.xib */; };
 		282B8F5C13E71D8200A0CD1A /* PlacesListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 282B8F5413E71D8200A0CD1A /* PlacesListViewController.xib */; };
 		282B8F5E13E71D8200A0CD1A /* StartPageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 282B8F5613E71D8200A0CD1A /* StartPageViewController.xib */; };
 		282B8F5F13E71D8200A0CD1A /* WholeMapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 282B8F5713E71D8200A0CD1A /* WholeMapViewController.xib */; };
 		282B8F6C13E739A100A0CD1A /* RecentAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 282B8F6B13E739A100A0CD1A /* RecentAddress.m */; };
+		2835FF561455CE640055F077 /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2835FF551455CE640055F077 /* Entitlements.plist */; };
 		28395E6913FB83EC00111B22 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28395E6813FB83EC00111B22 /* SystemConfiguration.framework */; };
 		2844EB1713FAED9000B4B592 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 2844EB1613FAED9000B4B592 /* Reachability.m */; };
 		285D326713F896180009AEEB /* RecentSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 285D326613F896180009AEEB /* RecentSearch.m */; };
@@ -49,7 +50,7 @@
 		289C7E1A13E719CE00803E4E /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 289C7E1913E719CE00803E4E /* MapKit.framework */; };
 		289C7E2613E71AA900803E4E /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 289C7E1B13E71AA900803E4E /* AboutViewController.m */; };
 		289C7E2713E71AA900803E4E /* DetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 289C7E1C13E71AA900803E4E /* DetailsViewController.m */; };
-		289C7E2913E71AA900803E4E /* ListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 289C7E1E13E71AA900803E4E /* ListViewController.m */; };
+		289C7E2913E71AA900803E4E /* PlaceTypeListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 289C7E1E13E71AA900803E4E /* PlaceTypeListViewController.m */; };
 		289C7E2B13E71AA900803E4E /* MapPin.m in Sources */ = {isa = PBXBuildFile; fileRef = 289C7E2013E71AA900803E4E /* MapPin.m */; };
 		289C7E2C13E71AA900803E4E /* OnePlaceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 289C7E2113E71AA900803E4E /* OnePlaceViewController.m */; };
 		289C7E2D13E71AA900803E4E /* Place.m in Sources */ = {isa = PBXBuildFile; fileRef = 289C7E2213E71AA900803E4E /* Place.m */; };
@@ -135,13 +136,14 @@
 		280A57D813F382FB00DF3466 /* Establishment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Establishment.png; sourceTree = "<group>"; };
 		282B8F5013E71D8200A0CD1A /* AboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AboutViewController.xib; path = ../../StuffNearMeSansCoreData/StuffNearMe/AboutViewController.xib; sourceTree = "<group>"; };
 		282B8F5113E71D8200A0CD1A /* DetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DetailsViewController.xib; path = ../../StuffNearMeSansCoreData/StuffNearMe/DetailsViewController.xib; sourceTree = "<group>"; };
-		282B8F5213E71D8200A0CD1A /* ListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ListViewController.xib; path = ../../StuffNearMeSansCoreData/StuffNearMe/ListViewController.xib; sourceTree = "<group>"; };
+		282B8F5213E71D8200A0CD1A /* PlaceTypeListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PlaceTypeListViewController.xib; path = ../../StuffNearMeSansCoreData/StuffNearMe/PlaceTypeListViewController.xib; sourceTree = "<group>"; };
 		282B8F5313E71D8200A0CD1A /* OnePlaceViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = OnePlaceViewController.xib; path = ../../StuffNearMeSansCoreData/StuffNearMe/OnePlaceViewController.xib; sourceTree = "<group>"; };
 		282B8F5413E71D8200A0CD1A /* PlacesListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PlacesListViewController.xib; path = ../../StuffNearMeSansCoreData/StuffNearMe/PlacesListViewController.xib; sourceTree = "<group>"; };
 		282B8F5613E71D8200A0CD1A /* StartPageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = StartPageViewController.xib; path = ../../StuffNearMeSansCoreData/StuffNearMe/StartPageViewController.xib; sourceTree = "<group>"; };
 		282B8F5713E71D8200A0CD1A /* WholeMapViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WholeMapViewController.xib; path = ../../StuffNearMeSansCoreData/StuffNearMe/WholeMapViewController.xib; sourceTree = "<group>"; };
 		282B8F6A13E739A100A0CD1A /* RecentAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentAddress.h; sourceTree = "<group>"; };
 		282B8F6B13E739A100A0CD1A /* RecentAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentAddress.m; sourceTree = "<group>"; };
+		2835FF551455CE640055F077 /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		28395E6813FB83EC00111B22 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		2844EB1513FAED9000B4B592 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		2844EB1613FAED9000B4B592 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
@@ -181,7 +183,7 @@
 		289C7E1913E719CE00803E4E /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		289C7E1B13E71AA900803E4E /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
 		289C7E1C13E71AA900803E4E /* DetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailsViewController.m; sourceTree = "<group>"; };
-		289C7E1E13E71AA900803E4E /* ListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListViewController.m; sourceTree = "<group>"; };
+		289C7E1E13E71AA900803E4E /* PlaceTypeListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaceTypeListViewController.m; sourceTree = "<group>"; };
 		289C7E1F13E71AA900803E4E /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		289C7E2013E71AA900803E4E /* MapPin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapPin.m; sourceTree = "<group>"; };
 		289C7E2113E71AA900803E4E /* OnePlaceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OnePlaceViewController.m; sourceTree = "<group>"; };
@@ -192,7 +194,7 @@
 		289C7E3213E71AB700803E4E /* WholeMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WholeMapViewController.m; sourceTree = "<group>"; };
 		289C7E3513E71AC800803E4E /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
 		289C7E3613E71AC800803E4E /* DetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailsViewController.h; sourceTree = "<group>"; };
-		289C7E3813E71AC800803E4E /* ListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListViewController.h; sourceTree = "<group>"; };
+		289C7E3813E71AC800803E4E /* PlaceTypeListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceTypeListViewController.h; sourceTree = "<group>"; };
 		289C7E3913E71AC800803E4E /* MapPin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapPin.h; sourceTree = "<group>"; };
 		289C7E3A13E71AC800803E4E /* OnePlaceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnePlaceViewController.h; sourceTree = "<group>"; };
 		289C7E3B13E71AC800803E4E /* Place.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Place.h; sourceTree = "<group>"; };
@@ -328,6 +330,7 @@
 		289C7DBE13E718A200803E4E = {
 			isa = PBXGroup;
 			children = (
+				2835FF551455CE640055F077 /* Entitlements.plist */,
 				289C7DD513E718A200803E4E /* StuffNearMe */,
 				289C7DF213E718A300803E4E /* StuffNearMeTests */,
 				289C7DCC13E718A200803E4E /* Frameworks */,
@@ -378,9 +381,6 @@
 				287AD3CE13EB135300EEA19D /* FavoriteAddViewController.h */,
 				287AD3CF13EB135300EEA19D /* FavoriteAddViewController.m */,
 				287AD3D013EB135300EEA19D /* FavoriteAddViewController.xib */,
-				289C7E3813E71AC800803E4E /* ListViewController.h */,
-				289C7E1E13E71AA900803E4E /* ListViewController.m */,
-				282B8F5213E71D8200A0CD1A /* ListViewController.xib */,
 				289C7E1F13E71AA900803E4E /* main.m */,
 				289C7E3913E71AC800803E4E /* MapPin.h */,
 				289C7E2013E71AA900803E4E /* MapPin.m */,
@@ -392,6 +392,9 @@
 				289C7E3C13E71AC800803E4E /* PlacesListViewController.h */,
 				289C7E2313E71AA900803E4E /* PlacesListViewController.m */,
 				282B8F5413E71D8200A0CD1A /* PlacesListViewController.xib */,
+				289C7E3813E71AC800803E4E /* PlaceTypeListViewController.h */,
+				289C7E1E13E71AA900803E4E /* PlaceTypeListViewController.m */,
+				282B8F5213E71D8200A0CD1A /* PlaceTypeListViewController.xib */,
 				2844EB1513FAED9000B4B592 /* Reachability.h */,
 				2844EB1613FAED9000B4B592 /* Reachability.m */,
 				2860E99D13EB128100E2A124 /* SavedAddressesViewController.h */,
@@ -659,7 +662,7 @@
 				289C7E9D13E71AF900803E4E /* Globe.jpg in Resources */,
 				282B8F5813E71D8200A0CD1A /* AboutViewController.xib in Resources */,
 				282B8F5913E71D8200A0CD1A /* DetailsViewController.xib in Resources */,
-				282B8F5A13E71D8200A0CD1A /* ListViewController.xib in Resources */,
+				282B8F5A13E71D8200A0CD1A /* PlaceTypeListViewController.xib in Resources */,
 				282B8F5B13E71D8200A0CD1A /* OnePlaceViewController.xib in Resources */,
 				282B8F5C13E71D8200A0CD1A /* PlacesListViewController.xib in Resources */,
 				282B8F5E13E71D8200A0CD1A /* StartPageViewController.xib in Resources */,
@@ -670,6 +673,7 @@
 				280A57D913F382FB00DF3466 /* Establishment.png in Resources */,
 				28BC8B5B1450A70600357B55 /* ActivityIndicatorViewController.xib in Resources */,
 				28A8BFFF14526E4900EC49A0 /* ImageNotAvailable.jpg in Resources */,
+				2835FF561455CE640055F077 /* Entitlements.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -710,7 +714,7 @@
 				289C7DE313E718A300803E4E /* StuffNearMe.xcdatamodeld in Sources */,
 				289C7E2613E71AA900803E4E /* AboutViewController.m in Sources */,
 				289C7E2713E71AA900803E4E /* DetailsViewController.m in Sources */,
-				289C7E2913E71AA900803E4E /* ListViewController.m in Sources */,
+				289C7E2913E71AA900803E4E /* PlaceTypeListViewController.m in Sources */,
 				289C7E2B13E71AA900803E4E /* MapPin.m in Sources */,
 				289C7E2C13E71AA900803E4E /* OnePlaceViewController.m in Sources */,
 				289C7E2D13E71AA900803E4E /* Place.m in Sources */,
@@ -784,7 +788,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Mason Silber";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -800,7 +804,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "252CD423-EB98-4C40-8DF4-DD62D38D1456";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 			};
@@ -812,7 +816,8 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_ENTITLEMENTS = Entitlement.plist;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Mason Silber";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -822,7 +827,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "252CD423-EB98-4C40-8DF4-DD62D38D1456";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -833,8 +838,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "StuffNearMe/StuffNearMe-Prefix.pch";
 				HEADER_SEARCH_PATHS = "";
@@ -852,8 +857,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "StuffNearMe/StuffNearMe-Prefix.pch";
 				HEADER_SEARCH_PATHS = "";
@@ -907,7 +912,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Mason Silber";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -917,7 +922,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "252CD423-EB98-4C40-8DF4-DD62D38D1456";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -928,8 +933,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "StuffNearMe/StuffNearMe-Prefix.pch";
 				HEADER_SEARCH_PATHS = "";

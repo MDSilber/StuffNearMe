@@ -6,10 +6,10 @@
 //  Copyright 2011 Columbia University. All rights reserved.
 //
 
-#import "ListViewController.h"
+#import "PlaceTypeListViewController.h"
 #import "StuffNearMeAppDelegate.h"
 
-@implementation ListViewController
+@implementation PlaceTypeListViewController
 
 @synthesize placesList;
 @synthesize lastIndexPath;
@@ -156,19 +156,20 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
     }
     
 
     [[cell textLabel] setText:[placesList objectAtIndex:indexPath.row]];
     
-    if([[self lastIndexPath] isEqual:indexPath])
-    {
-        [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
-    }
-    else
-    {
-        [cell setAccessoryType:UITableViewCellAccessoryNone];
-    }
+//    if([[self lastIndexPath] isEqual:indexPath])
+//    {
+//        [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
+//    }
+//    else
+//    {
+//        [cell setAccessoryType:UITableViewCellAccessoryNone];
+//    }
     
     return cell;
 }
@@ -219,30 +220,35 @@
     [[tableView cellForRowAtIndexPath:indexPath] setSelected:NO];
     StuffNearMeAppDelegate *mainDelegate = (StuffNearMeAppDelegate *)[[UIApplication sharedApplication] delegate];
 
-    if([self lastIndexPath])
-    {
-        UITableViewCell *uncheckCell = [tableView cellForRowAtIndexPath:[self lastIndexPath]];
-        [uncheckCell setAccessoryType:UITableViewCellAccessoryNone];
-        selectedPlaceIndex = -1;
-        [mainDelegate setTempPlace:selectedPlaceIndex];
-    }
+//    if([self lastIndexPath])
+//    {
+//        UITableViewCell *uncheckCell = [tableView cellForRowAtIndexPath:[self lastIndexPath]];
+//        [uncheckCell setAccessoryType:UITableViewCellAccessoryNone];
+//        selectedPlaceIndex = -1;
+//        [mainDelegate setTempPlace:selectedPlaceIndex];
+//    }
+//    
+//    if([[self lastIndexPath] isEqual:indexPath])
+//    {
+//        [self setLastIndexPath: nil];
+//    }
+//    else
+//    {
+//        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+//        [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
+//        [self setLastIndexPath: indexPath];
+//        selectedPlaceIndex = [placesList indexOfObject:[[cell textLabel]text]];
+//        
+//        [mainDelegate setTempPlace:selectedPlaceIndex];
+//        //NSLog(@"Selected place index: %d",(int)mainDelegate.UtempPlace);
+//    }
     
-    if([[self lastIndexPath] isEqual:indexPath])
-    {
-        [self setLastIndexPath: nil];
-    }
-    else
-    {
-        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-        [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
-        [self setLastIndexPath: indexPath];
-        selectedPlaceIndex = [placesList indexOfObject:[[cell textLabel]text]];
-        
-        [mainDelegate setTempPlace:selectedPlaceIndex];
-        //NSLog(@"Selected place index: %d",(int)mainDelegate.tempPlace);
-    }
-    
-    
+    selectedPlaceIndex = [placesList indexOfObject:[[[tableView cellForRowAtIndexPath:indexPath] textLabel]text]];
+    [mainDelegate setTempPlace:selectedPlaceIndex];
+    NSLog(@"%d",selectedPlaceIndex);
+
+    [self.navigationController popViewControllerAnimated:YES];
+
 }
 
 @end
