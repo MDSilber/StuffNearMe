@@ -16,11 +16,11 @@
 @synthesize managedObjectModel = __managedObjectModel;
 @synthesize persistentStoreCoordinator = __persistentStoreCoordinator;
 @synthesize tempPlace;
-@synthesize placeList, googlePlacesList;
+@synthesize placesList, googlePlacesList;
 
 -(void)dealloc
 {
-    [placeList release];
+    [placesList release];
     [googlePlacesList release];
     [super dealloc];
 }
@@ -28,7 +28,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     
-    placeList = [[NSArray alloc] initWithObjects:
+    placesList = [[NSArray alloc] initWithObjects:
                                 @"Airports", //airport
                                 @"ATMs", //atm 
                                 @"Bakeries", //bakery
@@ -110,7 +110,6 @@
                         @"train_station",
                         @"university",
                         nil];
-    
     
     StartPageViewController *firstViewController = [[StartPageViewController alloc] initWithNibName:@"StartPageViewController" bundle:[NSBundle mainBundle]];
     [firstViewController setTitle:@"Stuff Near Me"];

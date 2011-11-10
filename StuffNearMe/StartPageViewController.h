@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
 
-#import "PlaceTypeListViewController.h"
+//#import "PlaceTypeListViewController.h"
 #import "PlacesListViewController.h"
 #import "StuffNearMeAppDelegate.h"
 #import "AboutViewController.h"
@@ -22,12 +22,13 @@
 //@protocol RecentAddressDelegate; 
 
 
-@interface StartPageViewController : UIViewController<UITextFieldDelegate,CLLocationManagerDelegate,UIAlertViewDelegate>
+@interface StartPageViewController : UIViewController<UITextFieldDelegate,CLLocationManagerDelegate,UIAlertViewDelegate, UITableViewDelegate, UITableViewDataSource>
 {
     IBOutlet UISlider *rangeSlider;
-    IBOutlet UILabel *rangeLabel, *currentSelectionLabel;
+    IBOutlet UILabel *rangeLabel, *enterSearchTermsLabel;
     IBOutlet UIButton *go;
     IBOutlet UIButton *goToList;
+    UIButton *choicesButton;
     IBOutlet UITextField *locationTextField, *searchTextField;
     NSArray *placesList;
     NSArray *googlePlaces; 
@@ -35,7 +36,7 @@
     int placeSelection;
     BOOL placeSelected;
     BOOL keyboardOnScreen;
-    PlaceTypeListViewController *listView;
+    //PlaceTypeListViewController *listView;
     PlacesListViewController *placesListView;
     StuffNearMeAppDelegate *mainDelegate;
     id delegate;
@@ -45,6 +46,7 @@
     ActivityIndicatorViewController *loading;
     CLLocationCoordinate2D currentLocation;
     CLLocationManager *locationManager;
+    UITableView *choicesTable;
 }
 
 @property (nonatomic, retain) IBOutlet UISlider *rangeSlider;
@@ -52,20 +54,21 @@
 @property (nonatomic, retain) NSArray *googlePlaces;
 @property (nonatomic, retain) IBOutlet UILabel *rangeLabel;
 @property (nonatomic, retain) IBOutlet UIButton *go;
+@property (nonatomic, retain) UIButton *choicesButton;
 @property (nonatomic, retain) IBOutlet UITextField *locationTextField;
 @property (nonatomic, retain) IBOutlet UITextField *searchTextField;
 @property (nonatomic, retain) IBOutlet UIButton *goToList;
-@property (nonatomic, retain) PlaceTypeListViewController *listView;
+//@property (nonatomic, retain) PlaceTypeListViewController *listView;
 @property (nonatomic, retain) PlacesListViewController *placesListView;
-@property (nonatomic, retain) IBOutlet UILabel *currentSelectionLabel;
 @property (nonatomic, retain) StuffNearMeAppDelegate *mainDelegate;
 @property (nonatomic, assign) id delegate;
 
 -(IBAction)rangeChanged:(id)sender;
 -(IBAction)getPlacesPressed:(id)sender;
 -(void)getPlaces;
--(IBAction)choosePlaceType:(id)sender;
+//-(IBAction)choosePlaceType:(id)sender;
 -(IBAction)pushAboutPage:(id)sender;
 -(IBAction)goToSavedAddresses:(id)sender;
 -(void)toggleKeyboardOnScreen;
+-(void)choicesButtonPressed:(id)sender;
 @end

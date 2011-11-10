@@ -247,8 +247,13 @@
     [mainDelegate setTempPlace:selectedPlaceIndex];
     NSLog(@"%d",selectedPlaceIndex);
 
-    [self.navigationController popViewControllerAnimated:YES];
-
+    [[self navigationController] popViewControllerAnimated:YES];
+//    [UIView  beginAnimations:nil context:nil];
+//    [UIView setAnimationCurve: UIViewAnimationCurveEaseInOut];
+//    [UIView setAnimationDuration:0.25];
+//    [self.navigationController popViewControllerAnimated:NO];
+//    [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:self.navigationController.view cache:NO];
+//    [UIView commitAnimations];
 }
 
 @end

@@ -13,13 +13,13 @@
 {
     int tempPlace;
     UINavigationController *navigationController;
-    NSArray *placeList;
+    NSArray *placesList;
     NSArray *googlePlacesList;
 }
 
 @property (strong, nonatomic) UIWindow *window;
 @property int tempPlace;
-@property (readonly, nonatomic) NSArray *placeList;
+@property (readonly, nonatomic) NSArray *placesList;
 @property (readonly, nonatomic) NSArray *googlePlacesList;
 
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;

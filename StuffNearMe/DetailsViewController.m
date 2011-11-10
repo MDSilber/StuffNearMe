@@ -41,19 +41,6 @@
     return self;
 }
 
-//-(void)parseJSON
-//{
-//    NSURL *detailsURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@",DetailsURLOne,[place reference],DetailsURLTwo]];
-//    
-//    SBJsonParser *parser = [[SBJsonParser alloc] init];
-//    NSString *JSON = [[[NSString alloc] initWithContentsOfURL:detailsURL encoding:NSUTF8StringEncoding error:nil] autorelease];
-//    NSDictionary *result = [[parser objectWithString:JSON error:nil] objectForKey:@"result"];
-//    
-//    phoneNumber = [[result objectForKey:@"formatted_phone_number"] retain];
-//    zipCode = [[[[result objectForKey:@"address_components"] lastObject] objectForKey:@"long_name"] substringToIndex:5];
-//    [parser release];
-//}
-
 -(void)dealloc
 {
     [call release];

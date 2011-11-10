@@ -31,12 +31,11 @@
 @synthesize locationTextField;
 @synthesize searchTextField;
 @synthesize goToList;
-@synthesize listView;
+//@synthesize listView;
 @synthesize placesListView;
-@synthesize currentSelectionLabel;
 @synthesize mainDelegate;
 @synthesize delegate;
-//@synthesize recentAddressDelegate;
+@synthesize choicesButton;
 
 -(void)dealloc
 {
@@ -50,21 +49,21 @@
     [go release];
     [locationTextField release];
     [searchTextField release];
-    [currentSelectionLabel release];
     [mainDelegate release];
     [delegate release];
     [managedObjectContext release];
     [loading release];
     [locationManager release];
+    [choicesButton release];
     
     if(placesListView != nil)
     {
         [placesListView release];
     }
-    if(listView != nil)
-    {
-        [listView release];
-    }
+//    if(listView != nil)
+//    {
+//        [listView release];
+//    }
     
     [goImage release];
     [super dealloc];
@@ -73,6 +72,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [[self view] setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"EarthBackground.png"]]];
+    
     [locationTextField resignFirstResponder];
     [searchTextField resignFirstResponder];
     [locationTextField setAutocapitalizationType:UITextAutocapitalizationTypeWords];
@@ -80,16 +80,18 @@
     
     [[self navigationController] setToolbarHidden:YES animated:YES];
     
+    UIColor *color = [UIColor colorWithRed:26/255.0f green:96/255.0f blue:156/255.0f alpha:1.0];
+    [[[self navigationController] navigationBar] setTintColor:color];
     
     mainDelegate = (StuffNearMeAppDelegate *)[[UIApplication sharedApplication] delegate];
-//    if((int)[mainDelegate tempPlace] != -1 && placeSelected)
-//    {
-//        [currentSelectionLabel setText:[NSString stringWithFormat:@"Current Selection: %@",[placesList objectAtIndex:(unsigned int)[mainDelegate tempPlace]]]];
-//    }
-//    else
-//    {
-//        [currentSelectionLabel setText:@"Current Selection: none"];
-//    }
+    //    if((int)[mainDelegate tempPlace] != -1 && placeSelected)
+    //    {
+    //        [currentSelectionLabel setText:[NSString stringWithFormat:@"Current Selection: %@",[placesList objectAtIndex:(unsigned int)[mainDelegate tempPlace]]]];
+    //    }
+    //    else
+    //    {
+    //        [currentSelectionLabel setText:@"Current Selection: none"];
+    //    }
     
     if((int)[mainDelegate tempPlace] != -1)
     {
@@ -107,11 +109,23 @@
         goName = @"TA";
     }
     
-    [locationManager startUpdatingLocation];
+    choicesButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+    [choicesButton setFrame:CGRectMake(205, 3, 25, 25)];
+    [choicesButton setBackgroundImage:[UIImage imageNamed:@"DownArrow.png"] forState:UIControlStateNormal];
+    [searchTextField addSubview:choicesButton];
+    [choicesButton setHidden:YES];
+    [choicesButton addTarget:self action:@selector(choicesButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
+    
+    locationManager = [[CLLocationManager alloc] init];
+    [locationManager setDelegate:self];
+    [locationManager setDesiredAccuracy:kCLLocationAccuracyBest];
+    [locationManager setDistanceFilter:kCLDistanceFilterNone];
+    [locationManager startUpdatingLocation];
+    [locationManager startUpdatingLocation];
     
     //Hides label
     //[currentSelectionLabel setHidden:YES];
@@ -127,7 +141,7 @@
         [noInternetAlert release];
     }
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-
+    
     [mainDelegate setTempPlace:-1];
     managedObjectContext =[[(StuffNearMeAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext] retain];
     
@@ -135,7 +149,7 @@
     
     placeSelected = NO; 
     keyboardOnScreen = NO;
-    placesList = [[(StuffNearMeAppDelegate *)[[UIApplication sharedApplication] delegate] placeList] retain];
+    placesList = [[(StuffNearMeAppDelegate *)[[UIApplication sharedApplication] delegate] placesList] retain];
     googlePlaces = [[(StuffNearMeAppDelegate *)[[UIApplication sharedApplication] delegate] googlePlacesList] retain];
     
     if (self) {
@@ -143,11 +157,25 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toggleKeyboardOnScreen) name:UIKeyboardDidHideNotification object:nil];
     }
     
-    locationManager = [[CLLocationManager alloc] init];
-    [locationManager setDelegate:self];
-    [locationManager setDesiredAccuracy:kCLLocationAccuracyBest];
-    [locationManager setDistanceFilter:kCLDistanceFilterNone];
-    [locationManager startUpdatingLocation];
+    choicesTable = [[UITableView alloc] initWithFrame:CGRectMake(0, [[self view] frame].size.height + 31, [[self view] frame].size.width, [[self view] frame].size.height-[searchTextField frame].size.height) style:UITableViewStylePlain];
+    //[choicesTable setHidden:YES];
+    [choicesTable setDelegate:self];
+    [choicesTable setDataSource:self];
+    [[self view] addSubview:choicesTable];
+    /*
+     //Test code    
+     [[self view] setBackgroundColor:[UIColor clearColor]];
+     
+     MKMapView *backgroundMap = [[MKMapView alloc] initWithFrame:[[self view] frame]];
+     
+     MKCoordinateRegion region;
+     region.center.latitude = currentLocation.latitude;
+     region.center.longitude = currentLocation.longitude;
+     region.span.latitudeDelta = 0.1;
+     region.span.longitudeDelta = (480/320)*0.1;
+     [backgroundMap setRegion:region];
+     [[self view] addSubview:backgroundMap];
+     [backgroundMap release];*/
     
     return self;
 }
@@ -181,6 +209,7 @@
     [goToList setBackgroundImage:listImage forState:UIControlStateNormal];
     [goToList setUserInteractionEnabled:YES];
     [goToList addTarget:self action:@selector(choosePlaceType:) forControlEvents:UIControlEventTouchUpInside];
+    [goToList setHidden:YES];
     
     if([[locationTextField text] length] == 0)
     {
@@ -200,20 +229,51 @@
     [go setBackgroundImage:goImage forState:UIControlStateNormal];
     [go setUserInteractionEnabled:YES];
     [go addTarget:self action:@selector(getPlacesPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [currentSelectionLabel setTextColor:[UIColor whiteColor]];
     
     [[self view] addSubview:goToList];
     [[self view] addSubview:go];
     
     UIBarButtonItem *favorites = [[UIBarButtonItem alloc] initWithTitle:@"Favorites" 
-                                                                    style:UIBarButtonItemStyleBordered 
-                                                                   target:self 
-                                                                   action:@selector(goToSavedAddresses:)];
+                                                                  style:UIBarButtonItemStyleBordered 
+                                                                 target:self 
+                                                                 action:@selector(goToSavedAddresses:)];
     
     [[self navigationItem] setRightBarButtonItem:favorites];
     [favorites release];
     
     [super viewDidLoad];
+}
+
+-(void)choicesButtonPressed:(id)sender
+{
+    if([[choicesButton backgroundImageForState:UIControlStateNormal] isEqual:[UIImage imageNamed:@"DownArrow.png"]])
+    {        
+        [choicesButton setBackgroundImage:[UIImage imageNamed:@"UpArrow.png"] forState:UIControlStateNormal];
+        
+        //[choicesTable setHidden:NO];
+        
+        [UIView animateWithDuration:.75 animations:^{
+            [choicesButton setFrame:CGRectMake([[self view] frame].size.width - [choicesButton frame].size.width,[choicesButton frame].origin.y, [choicesButton frame].size.width, [choicesButton frame].size.height)];
+            [searchTextField setFrame:CGRectMake(0, 13, [[self view] frame].size.width, [searchTextField frame].size.height)];
+            [choicesTable setFrame:CGRectMake(0, 31, [[self view] frame].size.width, [[self view] frame].size.height-[searchTextField frame].size.height)];
+            [searchTextField resignFirstResponder];
+            [enterSearchTermsLabel setHidden:YES];
+        }];
+        
+    }
+    else
+    {
+        [choicesButton setBackgroundImage:[UIImage imageNamed:@"DownArrow.png"] forState:UIControlStateNormal];
+        //[choicesTable setHidden:YES];
+        
+        [UIView animateWithDuration:.75 animations:^{
+            [choicesButton setFrame:CGRectMake(205, 3, 25, 25)];
+            [searchTextField setFrame:CGRectMake(39,52,234,31)];
+            [choicesTable setFrame:CGRectMake(0, [[self view] frame].size.height + 31, [[self view] frame].size.width, [[self view] frame].size.height-[searchTextField frame].size.height)];
+            [searchTextField becomeFirstResponder];        
+            [enterSearchTermsLabel setHidden:NO];
+        }];
+    }
 }
 
 -(void)viewDidDisappear:(BOOL)animated
@@ -222,10 +282,11 @@
     {
         [[loading view] removeFromSuperview];
     }
-
+    
     [locationManager stopUpdatingLocation];
     [super viewDidDisappear:YES];
 }
+
 - (void)viewDidUnload
 {
     [super viewDidUnload];
@@ -239,7 +300,7 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
--(IBAction) rangeChanged:(UISlider *)sender
+-(IBAction)rangeChanged:(UISlider *)sender
 {
     int discreteValue = round([sender value]);
     [sender setValue:(float)discreteValue];
@@ -257,6 +318,17 @@
 {
     // NSLog(@"Did begin editing.");
     
+    if(textField == searchTextField)
+    {
+        if([[textField text] length] == 0)
+        {
+                [choicesButton setHidden:NO];
+        }
+        else
+        {
+            [choicesButton setHidden:YES];
+        }
+    }
     
     if(textField == locationTextField)
     {
@@ -271,8 +343,26 @@
          }
                          completion:NULL];
         
-
+        
     }
+}
+
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if(textField == searchTextField)
+    {
+        if([[textField text] length] == 0)
+        {
+            [textField setClearButtonMode:UITextFieldViewModeNever];
+            [choicesButton setHidden:NO];
+        }
+        else
+        {
+            [textField setClearButtonMode:UITextFieldViewModeWhileEditing];
+            [choicesButton setHidden:YES];
+        }
+    }
+    return YES;
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -301,7 +391,21 @@
          }];        
     }
     
+    if(textField == searchTextField && [choicesTable isHidden])
+    {
+        [choicesButton setHidden:YES];
+    }
+    
     [textField resignFirstResponder];
+    return YES;
+}
+
+-(BOOL)textFieldShouldClear:(UITextField *)textField
+{
+    if(textField == searchTextField)
+    {
+        [choicesButton setHidden:NO];
+    }
     return YES;
 }
 
@@ -352,10 +456,10 @@
         if([placesList containsObject:[searchTextField text]])
         {
             URL = [NSString stringWithFormat:@"%@%f%@%f%@%d%@%@%@",PlacesURLOne,currentLocation.latitude, @",", currentLocation.longitude,PlacesURLTwo,range,PlacesURLThree,[googlePlaces objectAtIndex:(unsigned int)[mainDelegate tempPlace]],PlacesURLFour];
-
+            
             placesListView = [[PlacesListViewController alloc] initWithStyle:UITableViewStylePlain andURL:URL andCoordinate:currentLocation andPlaceType:(NSString *)[[placesList objectAtIndex:(unsigned int)[mainDelegate tempPlace]] lowercaseString] andRange:range/1600];
             
-            placeSelection = [listView selectedPlaceIndex];
+            //placeSelection = [listView selectedPlaceIndex];
             
             [placesListView setTitle:[NSString stringWithFormat:@"%@",[placesList objectAtIndex:(unsigned int)[mainDelegate tempPlace]]]];
             
@@ -442,10 +546,10 @@
                  
                  placesListView = [[PlacesListViewController alloc] initWithStyle:UITableViewStylePlain andURL:URL andCoordinate:[[topResult location] coordinate] andPlaceType:(NSString *)[[placesList objectAtIndex:(unsigned int)[mainDelegate tempPlace]] lowercaseString] andRange:range/1600];
                  
-                 placeSelection = [listView selectedPlaceIndex];
+                 //placeSelection = [listView selectedPlaceIndex];
                  
                  [placesListView setTitle:[NSString stringWithFormat:@"%@",[placesList objectAtIndex:(unsigned int)[mainDelegate tempPlace]]]];
-
+                 
                  [[self navigationController] pushViewController:placesListView animated:YES];
              }
              else
@@ -472,11 +576,11 @@
                  placesListView = [[PlacesListViewController alloc] initWithStyle:UITableViewStylePlain andURL:URL andCoordinate:[[topResult location] coordinate] andPlaceType:nil andRange:range/1600];
                  
                  [placesListView setTitle:@"Results"];
-
+                 
                  [[self navigationController] pushViewController:placesListView animated:YES];
              }
          }];
-
+        
         [geocoder release];
     }
 }
@@ -490,26 +594,26 @@
 {
 	NSLog(@"Error: %@", [error description]);
 }
-
--(IBAction)choosePlaceType:(id)sender
-{   
-    placeSelected = YES;
-    
-    if(!listView)
-    {
-        listView = [[PlaceTypeListViewController alloc] init];
-    }
-    [listView setTitle:@"Place Types"];
-    
-    if([[locationTextField text] length] != 0)
-    {
-        [go setBackgroundImage:[UIImage imageNamed:@"UseThisAddress.png"] forState:UIControlStateNormal];
-        goName = @"TA";
-        
-    }
-    
-    [[self navigationController] pushViewController:listView animated:YES];
-}
+//
+//-(IBAction)choosePlaceType:(id)sender
+//{   
+//    placeSelected = YES;
+//    
+//    if(!listView)
+//    {
+//        listView = [[PlaceTypeListViewController alloc] init];
+//    }
+//    [listView setTitle:@"Place Types"];
+//    
+//    if([[locationTextField text] length] != 0)
+//    {
+//        [go setBackgroundImage:[UIImage imageNamed:@"UseThisAddress.png"] forState:UIControlStateNormal];
+//        goName = @"TA";
+//        
+//    }
+//    
+//    [[self navigationController] pushViewController:listView animated:YES];
+//}
 
 -(IBAction)pushAboutPage:(id)sender
 {
@@ -536,4 +640,47 @@
     }
 }
 
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [placesList count];
+}
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"Cell";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+    }
+    
+    
+    [[cell textLabel] setText:[placesList objectAtIndex:indexPath.row]];
+    [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+    return cell;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [searchTextField setText:[placesList objectAtIndex:indexPath.row]];
+    [[tableView cellForRowAtIndexPath:indexPath] setSelected:NO];
+    [mainDelegate setTempPlace:[placesList indexOfObject:[[[tableView cellForRowAtIndexPath:indexPath] textLabel]text]]];
+
+    [choicesButton setBackgroundImage:[UIImage imageNamed:@"DownArrow.png"] forState:UIControlStateNormal];
+    //[choicesTable setHidden:YES];
+    
+    [UIView animateWithDuration:.75 animations:^{
+        [choicesButton setFrame:CGRectMake(205, 3, 25, 25)];
+        [searchTextField setFrame:CGRectMake(39,52,234,31)];
+        [choicesTable setFrame:CGRectMake(0, [[self view] frame].size.height + 31, [[self view] frame].size.width, [[self view] frame].size.height-[searchTextField frame].size.height)];
+        [searchTextField becomeFirstResponder];        
+        [enterSearchTermsLabel setHidden:NO];
+    }];
+}
 @end
