@@ -66,6 +66,11 @@
         [wholeMap release];
     }
     
+    if(loading)
+    {
+        [loading release];
+    }
+    
     [super dealloc];
 }
 
@@ -351,6 +356,11 @@
 
 - (void)viewDidDisappear:(BOOL)animated
 {
+    if([loading view].superview)
+    {
+        [[loading view] removeFromSuperview];
+    }
+    
     [super viewDidDisappear:animated];
 }
 
@@ -396,14 +406,20 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    OnePlaceViewController *mapView = [[OnePlaceViewController alloc] initWithNibName:nil bundle:nil andPlace:[finalPlaceArray objectAtIndex:[indexPath row]] andCurrentLocation:startingCoordinate];
-    [[finalPlaceArray objectAtIndex:[indexPath row]] print];
+//    OnePlaceViewController *mapView = [[OnePlaceViewController alloc] initWithNibName:nil bundle:nil andPlace:[finalPlaceArray objectAtIndex:[indexPath row]] andCurrentLocation:startingCoordinate];
+//    [[finalPlaceArray objectAtIndex:[indexPath row]] print];
+//    
+//    [mapView setTitle :[[finalPlaceArray objectAtIndex:[indexPath row]] name]];
+//    [[self navigationController] pushViewController:mapView animated:YES];
+//    
+//    [[[self tableView] cellForRowAtIndexPath:indexPath] setSelected:NO];
+//    [mapView release];
     
-    [mapView setTitle :[[finalPlaceArray objectAtIndex:[indexPath row]] name]];
-    [[self navigationController] pushViewController:mapView animated:YES];
-    
+    loading = [[ActivityIndicatorViewController alloc] init];
+    [[self view] addSubview:[loading view]];
+
+    [NSThread detachNewThreadSelector:@selector(pushDetailsPageForPlace:) toTarget:self withObject:[finalPlaceArray objectAtIndex:indexPath.row]];
     [[[self tableView] cellForRowAtIndexPath:indexPath] setSelected:NO];
-    [mapView release];
 }
 
 #pragma mark - Table view delegate
@@ -427,6 +443,22 @@
     [[self navigationController] pushViewController:wholeMap animated:YES];
 }
 
+-(void)pushDetailsPageForPlace:(Place *)place
+{
+    NSURL *detailsURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@",DetailsURLOne,[place reference],DetailsURLTwo]];
+    
+    NSString *JSON = [[[NSString alloc] initWithContentsOfURL:detailsURL encoding:NSUTF8StringEncoding error:nil] autorelease];
+    NSDictionary *result = [[parser objectWithString:JSON error:nil] objectForKey:@"result"];
+    
+    NSString *phoneNumber = [[result objectForKey:@"formatted_phone_number"] retain];
+    NSString *zipCode = [[[[result objectForKey:@"address_components"] lastObject] objectForKey:@"long_name"] substringToIndex:5];
+    
+    DetailsViewController *detailsViewController = [[DetailsViewController alloc] initWithPlace:place andPhoneNumber:phoneNumber andZipCode:zipCode];
+    [detailsViewController setTitle:[place name]];
+    [[self navigationController] pushViewController:detailsViewController animated:YES];
+    [detailsViewController release];
+    [phoneNumber release];
 
+}
 @end
 

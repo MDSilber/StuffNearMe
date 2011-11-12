@@ -12,6 +12,7 @@
 
 #import "Place.h"
 #import "MapPin.h"
+#import "OnePlaceViewController.h"
 
 @interface DetailsViewController : UIViewController <UIActionSheetDelegate,MKMapViewDelegate>
 {
@@ -30,4 +31,6 @@
 -(IBAction)getDirections:(id)sender;
 -(IBAction)makeCall:(id)sender;
 -(void)createMapView;
+-(void)pushOnePlaceMapView;
+
 @end

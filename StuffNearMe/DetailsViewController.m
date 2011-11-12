@@ -29,13 +29,12 @@
 
 @implementation DetailsViewController
 
-
 -(id)initWithPlace:(Place *)aPlace andPhoneNumber:(NSString *)aPhoneNumber andZipCode:(NSString *)aZipCode
 {
     self = [super init];
     if (self) {
         place = aPlace; 
-        phoneNumber = aPhoneNumber;
+        phoneNumber = [aPhoneNumber retain];
         zipCode = aZipCode;
     }
     return self;
@@ -44,7 +43,9 @@
 -(void)dealloc
 {
     [call release];
+    
     [phoneNumber release];
+    
     [imageView release];    
     NSLog(@"%@ dealloc called",[self class]);
     [super dealloc];
@@ -163,6 +164,19 @@
     [placeView addAnnotation:placePin];
     [placePin release];
     [[self view] addSubview:placeView];
+    
+    UIButton *mapButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [mapButton setFrame:[placeView frame]];
+    [mapButton addTarget:self action:@selector(pushOnePlaceMapView) forControlEvents:UIControlEventTouchUpInside];
+    [[self view] addSubview:mapButton];
+}
+
+-(void)pushOnePlaceMapView
+{
+    OnePlaceViewController *mapView = [[OnePlaceViewController alloc] initWithNibName:nil bundle:nil andPlace:place andCurrentLocation:[place startLocation]];
+    [mapView setTitle:[place name]];
+    [[self navigationController] pushViewController:mapView animated:YES];
+    [mapView release];
 }
 
 -(MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation

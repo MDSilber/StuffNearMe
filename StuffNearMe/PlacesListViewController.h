@@ -13,6 +13,11 @@
 #import "Place.h"
 #import "OnePlaceViewController.h"
 #import "WholeMapViewController.h"
+#import "DetailsViewController.h"
+#import "ActivityIndicatorViewController.h"
+
+#define DetailsURLOne @"https://maps.googleapis.com/maps/api/place/details/json?reference="
+#define DetailsURLTwo @"&sensor=false&key=AIzaSyB82DFAyuV8aeLaQ3ubJ-ZYsy6gC6HuX0o"
 
 @interface PlacesListViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource,CLLocationManagerDelegate,UIAlertViewDelegate>
 {
@@ -32,11 +37,13 @@
     int range;
     SBJsonParser *parser;
     WholeMapViewController *wholeMap;
+    ActivityIndicatorViewController *loading;
 }
 
 -(void)parseJSONOfGooglePlacesAPI;
 -(void)parseJSONOfGoogleAutocompleteAPI;
 - (id)initWithStyle:(UITableViewStyle)style andURL:(NSString *)placesURL andCoordinate:(CLLocationCoordinate2D)coordinate andPlaceType:(NSString *)type andRange:(int)range;
 -(IBAction)viewMap:(id)sender;
+-(void)pushDetailsPageForPlace:(Place *)place;
 
 @end

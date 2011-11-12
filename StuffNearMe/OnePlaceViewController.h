@@ -1,5 +1,5 @@
 //
-//  MapViewController.h
+//  OnePlaceViewController.h
 //  StuffNearMe
 //
 //  Created by Mason Silber on 7/17/11.
@@ -10,7 +10,7 @@
 #import "MapKit/MapKit.h"
 #import "MapPin.h"
 #import "Place.h"
-#import "DetailsViewController.h"
+//#import "DetailsViewController.h"
 #import "ActivityIndicatorViewController.h"
 
 @interface OnePlaceViewController : UIViewController <MKMapViewDelegate,UIActionSheetDelegate,CLLocationManagerDelegate,UINavigationControllerDelegate>
@@ -24,7 +24,7 @@
     NSString *transportType;
     CLLocationManager *manager;
     UIBarButtonItem *mapType;
-    DetailsViewController *detailsViewController;
+    //DetailsViewController *detailsViewController;
     ActivityIndicatorViewController *loading;
 }
 
@@ -33,6 +33,6 @@
 -(IBAction)getDirections:(id)sender;
 -(IBAction)changeMapType:(id)sender;
 -(IBAction)updateCurrentLocation:(id)sender;
--(void)pushDetailsPageFromView:(MKAnnotationView *)view;
+//-(void)pushDetailsPageFromView:(MKAnnotationView *)view;
 
 @end

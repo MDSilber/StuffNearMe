@@ -128,7 +128,7 @@
     [startingLocationPin release];
     [mapAnnotations release];
     [mapType release];
-    [detailsViewController release];
+    //[detailsViewController release];
 
     if(loading)
     {
@@ -176,7 +176,7 @@
         }
         else
         {
-            [pinView setRightCalloutAccessoryView:[UIButton buttonWithType:UIButtonTypeDetailDisclosure]];
+            //[pinView setRightCalloutAccessoryView:[UIButton buttonWithType:UIButtonTypeDetailDisclosure]];
             [pinView setPinColor:MKPinAnnotationColorRed];
         }
         
@@ -287,28 +287,28 @@
     return;
 }
 
--(void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
-{
-    loading = [[ActivityIndicatorViewController alloc] init];
-    [[self view] addSubview:[loading view]];
-    [NSThread detachNewThreadSelector:@selector(pushDetailsPageFromView:) toTarget:self withObject:view];
-}
-
--(void)pushDetailsPageFromView:(MKAnnotationView *)view
-{
-    NSURL *detailsURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@",DetailsURLOne,[place reference],DetailsURLTwo]];
-    
-    SBJsonParser *parser = [[SBJsonParser alloc] init];
-    NSString *JSON = [[[NSString alloc] initWithContentsOfURL:detailsURL encoding:NSUTF8StringEncoding error:nil] autorelease];
-    NSDictionary *result = [[parser objectWithString:JSON error:nil] objectForKey:@"result"];
-    
-    NSString *phoneNumber = [[result objectForKey:@"formatted_phone_number"] retain];
-    NSString *zipCode = [[[[result objectForKey:@"address_components"] lastObject] objectForKey:@"long_name"] substringToIndex:5];
-    [parser release];
-    
-    detailsViewController = [[DetailsViewController alloc] initWithPlace:[(MapPin *)[view annotation] place] andPhoneNumber:phoneNumber andZipCode:zipCode];
-    [detailsViewController setTitle:[[view annotation] title]];
-    [[self navigationController] pushViewController:detailsViewController animated:YES];
-    [phoneNumber release];
-}
+//-(void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
+//{
+//    loading = [[ActivityIndicatorViewController alloc] init];
+//    [[self view] addSubview:[loading view]];
+//    [NSThread detachNewThreadSelector:@selector(pushDetailsPageFromView:) toTarget:self withObject:view];
+//}
+//
+//-(void)pushDetailsPageFromView:(MKAnnotationView *)view
+//{
+//    NSURL *detailsURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@",DetailsURLOne,[place reference],DetailsURLTwo]];
+//    
+//    SBJsonParser *parser = [[SBJsonParser alloc] init];
+//    NSString *JSON = [[[NSString alloc] initWithContentsOfURL:detailsURL encoding:NSUTF8StringEncoding error:nil] autorelease];
+//    NSDictionary *result = [[parser objectWithString:JSON error:nil] objectForKey:@"result"];
+//    
+//    NSString *phoneNumber = [[result objectForKey:@"formatted_phone_number"] retain];
+//    NSString *zipCode = [[[[result objectForKey:@"address_components"] lastObject] objectForKey:@"long_name"] substringToIndex:5];
+//    [parser release];
+//    
+//    detailsViewController = [[DetailsViewController alloc] initWithPlace:[(MapPin *)[view annotation] place] andPhoneNumber:phoneNumber andZipCode:zipCode];
+//    [detailsViewController setTitle:[[view annotation] title]];
+//    [[self navigationController] pushViewController:detailsViewController animated:YES];
+//    [phoneNumber release];
+//}
 @end

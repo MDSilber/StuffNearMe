@@ -131,8 +131,10 @@
     {
         [map setMapType:MKMapTypeSatellite];
     }
+    UIBarButtonItem *flex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
     
-    [self setToolbarItems:[NSArray arrayWithObjects:mapType, nil]];
+    [self setToolbarItems:[NSArray arrayWithObjects:flex,mapType, nil]];
+    [flex release];
 
 }
 
