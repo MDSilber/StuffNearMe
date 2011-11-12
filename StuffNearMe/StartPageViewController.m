@@ -30,12 +30,12 @@
 @synthesize go;
 @synthesize locationTextField;
 @synthesize searchTextField;
-@synthesize goToList;
 //@synthesize listView;
 @synthesize placesListView;
 @synthesize mainDelegate;
 @synthesize delegate;
 @synthesize choicesButton;
+@synthesize locationManager;
 
 -(void)dealloc
 {
@@ -45,7 +45,6 @@
     [placesList release];
     [googlePlaces release];
     [rangeLabel release];
-    [goToList release];
     [go release];
     [locationTextField release];
     [searchTextField release];
@@ -115,11 +114,17 @@
     [searchTextField addSubview:choicesButton];
     [choicesButton setHidden:YES];
     [choicesButton addTarget:self action:@selector(choicesButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    
+    if([[locationTextField text] length] != 0)
+    {
+        [OR setHidden:YES];
+    }
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+
     locationManager = [[CLLocationManager alloc] init];
     [locationManager setDelegate:self];
     [locationManager setDesiredAccuracy:kCLLocationAccuracyBest];
@@ -140,7 +145,6 @@
         [noInternetAlert show];
         [noInternetAlert release];
     }
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     
     [mainDelegate setTempPlace:-1];
     managedObjectContext =[[(StuffNearMeAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext] retain];
@@ -158,10 +162,10 @@
     }
     
     choicesTable = [[UITableView alloc] initWithFrame:CGRectMake(0, [[self view] frame].size.height + 31, [[self view] frame].size.width, [[self view] frame].size.height-[searchTextField frame].size.height) style:UITableViewStylePlain];
-    //[choicesTable setHidden:YES];
     [choicesTable setDelegate:self];
     [choicesTable setDataSource:self];
     [[self view] addSubview:choicesTable];
+
     /*
      //Test code    
      [[self view] setBackgroundColor:[UIColor clearColor]];
@@ -202,14 +206,14 @@
     [[self navigationItem] setLeftBarButtonItem:aboutButton];
     [aboutButton release];
     
-    UIImage *listImage = [UIImage imageNamed:@"ChooseLocationType.png"];
-    goToList = [UIButton buttonWithType:UIButtonTypeCustom];
-    CGRect buttonRect = CGRectMake(25,94,270,51);
-    [goToList setFrame:buttonRect];
-    [goToList setBackgroundImage:listImage forState:UIControlStateNormal];
-    [goToList setUserInteractionEnabled:YES];
-    [goToList addTarget:self action:@selector(choosePlaceType:) forControlEvents:UIControlEventTouchUpInside];
-    [goToList setHidden:YES];
+//    UIImage *listImage = [UIImage imageNamed:@"ChooseLocationType.png"];
+//    goToList = [UIButton buttonWithType:UIButtonTypeCustom];
+//    CGRect buttonRect = CGRectMake(25,94,270,51);
+//    [goToList setFrame:buttonRect];
+//    [goToList setBackgroundImage:listImage forState:UIControlStateNormal];
+//    [goToList setUserInteractionEnabled:YES];
+//    [goToList addTarget:self action:@selector(choosePlaceType:) forControlEvents:UIControlEventTouchUpInside];
+//    [goToList setHidden:YES];
     
     if([[locationTextField text] length] == 0)
     {
@@ -224,13 +228,13 @@
         goName = @"TA";
     }
     go = [UIButton buttonWithType:UIButtonTypeCustom];
-    CGRect goRect = CGRectMake(25, 295, 270, 51);
+    CGRect goRect = CGRectMake(25, 305, 270, 51);
     [go setFrame:goRect];
     [go setBackgroundImage:goImage forState:UIControlStateNormal];
     [go setUserInteractionEnabled:YES];
     [go addTarget:self action:@selector(getPlacesPressed:) forControlEvents:UIControlEventTouchUpInside];
     
-    [[self view] addSubview:goToList];
+    //[[self view] addSubview:goToList];
     [[self view] addSubview:go];
     
     UIBarButtonItem *favorites = [[UIBarButtonItem alloc] initWithTitle:@"Favorites" 
@@ -254,7 +258,7 @@
         
         [UIView animateWithDuration:.75 animations:^{
             [choicesButton setFrame:CGRectMake([[self view] frame].size.width - [choicesButton frame].size.width,[choicesButton frame].origin.y, [choicesButton frame].size.width, [choicesButton frame].size.height)];
-            [searchTextField setFrame:CGRectMake(0, 13, [[self view] frame].size.width, [searchTextField frame].size.height)];
+            [searchTextField setFrame:CGRectMake(0, 0, [[self view] frame].size.width, [searchTextField frame].size.height)];
             [choicesTable setFrame:CGRectMake(0, 31, [[self view] frame].size.width, [[self view] frame].size.height-[searchTextField frame].size.height)];
             [searchTextField resignFirstResponder];
             [enterSearchTermsLabel setHidden:YES];
@@ -322,17 +326,34 @@
     {
         if([[textField text] length] == 0)
         {
-                [choicesButton setHidden:NO];
+            [choicesButton setHidden:NO];
         }
         else
         {
             [choicesButton setHidden:YES];
+        }
+        
+        if(![choicesTable isHidden])
+        {
+            if([[textField text] length] == 0)
+            {
+                [choicesButton setBackgroundImage:[UIImage imageNamed:@"DownArrow.png"] forState:UIControlStateNormal];
+            }
+            
+            [UIView animateWithDuration:.75 animations:^{
+                [choicesButton setFrame:CGRectMake(205, 3, 25, 25)];
+                [searchTextField setFrame:CGRectMake(39,52,234,31)];
+                [choicesTable setFrame:CGRectMake(0, [[self view] frame].size.height + 31, [[self view] frame].size.width, [[self view] frame].size.height-[searchTextField frame].size.height)];
+                [searchTextField becomeFirstResponder];        
+                [enterSearchTermsLabel setHidden:NO];
+            }];
         }
     }
     
     if(textField == locationTextField)
     {
         [go setBackgroundImage:[UIImage imageNamed:@"UseThisAddress.png"] forState:UIControlStateNormal];
+        [OR setHidden:YES];
         goName = @"TA";
         [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationCurveEaseInOut animations:^
          {
@@ -382,16 +403,18 @@
              {
                  [go setBackgroundImage:[UIImage imageNamed:@"UseCurrentLocation.png"] forState:UIControlStateNormal];
                  goName = @"CL";
+                 [OR setHidden:NO];
              }
              else
              {
                  [go setBackgroundImage:[UIImage imageNamed:@"UseThisAddress.png"] forState:UIControlStateNormal];
                  goName = @"TA";
+                 [OR setHidden:YES];
              }
          }];        
     }
     
-    if(textField == searchTextField && [choicesTable isHidden])
+    if(textField == searchTextField && ([choicesTable isHidden] || [[textField text] length] == 0))
     {
         [choicesButton setHidden:YES];
     }
@@ -679,7 +702,7 @@
         [choicesButton setFrame:CGRectMake(205, 3, 25, 25)];
         [searchTextField setFrame:CGRectMake(39,52,234,31)];
         [choicesTable setFrame:CGRectMake(0, [[self view] frame].size.height + 31, [[self view] frame].size.width, [[self view] frame].size.height-[searchTextField frame].size.height)];
-        [searchTextField becomeFirstResponder];        
+        //[searchTextField becomeFirstResponder];        
         [enterSearchTermsLabel setHidden:NO];
     }];
 }

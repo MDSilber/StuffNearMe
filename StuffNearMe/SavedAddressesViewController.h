@@ -47,6 +47,8 @@
 -(IBAction)addFavoriteAddress:(id)sender;
 -(IBAction)clear:(id)sender;
 -(IBAction)edit:(id)sender;
+-(void)editFavoriteAddress:(FavoriteAddress *)favorite;
+-(void)enableEdit;
 
 - (void)favoriteAddViewController:(FavoriteAddViewController *)favoriteAddViewController didAddFavorite:(FavoriteAddress *)favoriteAddress;
 -(void)getData;

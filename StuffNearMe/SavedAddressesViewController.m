@@ -34,10 +34,11 @@
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         numberOfRecentAddresses = [defaults integerForKey:@"recentAddressNumber"];
         numberOfRecentSearches = [defaults integerForKey:@"recentSearchNumber"];
-                
+        
         NSLog(@"Recent address number: %d",numberOfRecentAddresses);
         NSLog(@"Recent search number: %d", numberOfRecentSearches);
         
+        [[self tableView] setAllowsSelectionDuringEditing:YES];
         [self getData];
     }
     return self;
@@ -51,7 +52,7 @@
     
     NSSortDescriptor *sorter = [[NSSortDescriptor alloc] initWithKey:@"index" ascending:YES];
     NSArray *sorters = [NSArray arrayWithObjects:sorter, nil];
-
+    
     [request setEntity:[NSEntityDescription entityForName:@"FavoriteAddress" inManagedObjectContext:managedObjectContext]];
     
     NSArray *tempArray = [managedObjectContext executeFetchRequest:request error:nil];
@@ -113,11 +114,11 @@
         }        
         
         NSArray *temp = recentSearches;
-
+        
         [recentSearches release];
         recentSearches = nil;
         recentSearches = [[NSMutableArray arrayWithArray:[temp objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, numberOfRecentSearches-1)]]] retain];
-
+        
         for(RecentSearch *recent in toBeDeleted)
         {
             [managedObjectContext deleteObject:recent];
@@ -136,7 +137,7 @@
             NSLog(@"Saved");
         }
     }
-        
+    
     [request release];
 }
 
@@ -200,7 +201,43 @@
     [clearButton release];
     [flex release];
     
+    if([[self tableView] isEditing])
+    {
+        [[self tableView] setEditing:NO];
+    }
+
+    [self enableEdit];
+    
     [super viewWillAppear:animated];
+}
+
+-(void)enableEdit
+{
+    UIBarButtonItem *edit = [[self toolbarItems] objectAtIndex:0];
+    if([segmentedControl selectedSegmentIndex] == 0)
+    {
+        if([favorites count] == 0)
+        {
+            [edit setEnabled:NO];
+            [edit setTitle:@"Edit"];
+        }
+        else
+        {
+            [edit setEnabled:YES];
+        }
+    }
+    else
+    {
+        if([recentSearches count] == 0 && [recentAddresses count] == 0)
+        {
+            [edit setEnabled:NO];
+            [edit setTitle:@"Edit"];
+         }
+        else
+        {
+            [edit setEnabled:YES];
+        }
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -298,17 +335,17 @@
     {
         if([indexPath section] == 0)
         {
-                [[cell textLabel] setText:(NSString *)[[recentAddresses objectAtIndex:indexPath.row] address]];
-                [[cell detailTextLabel] setText:[formatter stringFromDate:[[recentAddresses objectAtIndex:indexPath.row] date]]];
+            [[cell textLabel] setText:(NSString *)[[recentAddresses objectAtIndex:indexPath.row] address]];
+            [[cell detailTextLabel] setText:[formatter stringFromDate:[[recentAddresses objectAtIndex:indexPath.row] date]]];
         }
         else
         {
-
-                [[cell textLabel] setText:[[recentSearches objectAtIndex:indexPath.row] name]];
-                [[cell detailTextLabel] setText:[formatter stringFromDate:[[recentSearches objectAtIndex:indexPath.row] date]]];
+            
+            [[cell textLabel] setText:[[recentSearches objectAtIndex:indexPath.row] name]];
+            [[cell detailTextLabel] setText:[formatter stringFromDate:[[recentSearches objectAtIndex:indexPath.row] date]]];
         }
     }
-
+    
     return cell;
 }
 
@@ -318,7 +355,6 @@
 {
     return YES;
 }
-
 
 
 // Override to support editing the table view.
@@ -333,6 +369,10 @@
             FavoriteAddress *deleteFavorite = [favorites objectAtIndex:[indexPath row]];
             [managedObjectContext deleteObject:(NSManagedObject *)deleteFavorite];
             [favorites removeObject:deleteFavorite];
+            if([favorites count] == 0)
+            {
+                [[self tableView] setEditing:NO];
+            }
         }
         else
         {
@@ -341,12 +381,20 @@
                 RecentAddress *deleteAddress = [recentAddresses objectAtIndex:[indexPath row]];
                 [managedObjectContext deleteObject:deleteAddress];
                 [recentAddresses removeObject:deleteAddress];
+                if([recentAddresses count] == 0)
+                {
+                    [[self tableView] setEditing:NO];
+                }
             }
             else
             {
                 RecentSearch *deleteSearch = [recentSearches objectAtIndex:[indexPath row]];
                 [managedObjectContext deleteObject:deleteSearch];
                 [recentSearches removeObject:deleteSearch];
+                if([recentSearches count] == 0)
+                {
+                    [[self tableView] setEditing:NO];
+                }
             }
         }
         
@@ -359,11 +407,12 @@
             NSLog(@"Saved");
         }
         [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-
+        
     }   
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
     }   
+    [self enableEdit];
 }
 
 // Override to support rearranging the table view.
@@ -408,33 +457,40 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    StartPageViewController *startPage = [[[[self navigationController] viewControllers] objectAtIndex:0] retain];
-    
-    //Favorites
-    if([segmentedControl selectedSegmentIndex] == 0)
+    if([[self tableView] isEditing])
     {
-        [[startPage locationTextField] setText:(NSString *)[[favorites objectAtIndex:[indexPath row]] address]];
-        [[startPage go] setBackgroundImage:[UIImage imageNamed:@"UseThisAddress.png"] forState:UIControlStateNormal];
-        
+        [self editFavoriteAddress:[favorites objectAtIndex:indexPath.row]];
     }
-    //Recents
     else
     {
-        //Recent Addresses
-        if([indexPath section] == 0)
+        StartPageViewController *startPage = [[[[self navigationController] viewControllers] objectAtIndex:0] retain];
+        
+        //Favorites
+        if([segmentedControl selectedSegmentIndex] == 0)
         {
-            [[startPage locationTextField] setText:(NSString *)[[recentAddresses objectAtIndex:[indexPath row]] address]];
+            [[startPage locationTextField] setText:(NSString *)[[favorites objectAtIndex:[indexPath row]] address]];
             [[startPage go] setBackgroundImage:[UIImage imageNamed:@"UseThisAddress.png"] forState:UIControlStateNormal];
+            
         }
-        //Recent Searches
+        //Recents
         else
         {
-            [[startPage searchTextField] setText:[[recentSearches objectAtIndex:[indexPath row]] name]];
+            //Recent Addresses
+            if([indexPath section] == 0)
+            {
+                [[startPage locationTextField] setText:(NSString *)[[recentAddresses objectAtIndex:[indexPath row]] address]];
+                [[startPage go] setBackgroundImage:[UIImage imageNamed:@"UseThisAddress.png"] forState:UIControlStateNormal];
+            }
+            //Recent Searches
+            else
+            {
+                [[startPage searchTextField] setText:[[recentSearches objectAtIndex:[indexPath row]] name]];
+            }
         }
+        
+        [startPage release];
+        [[self navigationController] popViewControllerAnimated:YES];
     }
-    
-    [startPage release];
-    [[self navigationController] popViewControllerAnimated:YES];
 }
 
 -(IBAction)segmentedControlIndexChanged
@@ -455,6 +511,7 @@
         
     }
     
+    [self enableEdit];
     [[self tableView] reloadData];
 }
 
@@ -465,6 +522,22 @@
     
     FavoriteAddress *favorite = [NSEntityDescription insertNewObjectForEntityForName:@"FavoriteAddress" inManagedObjectContext:[self managedObjectContext]];
     [favoriteAddViewController setFavorite:favorite];
+    
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:favoriteAddViewController];
+    [[nav navigationBar] setTintColor:[UIColor colorWithRed:26/255.0f green:96/255.0f blue:156/255.0f alpha:1.0]];
+    [[self navigationController] presentModalViewController:nav animated:YES];
+    [favoriteAddViewController release];
+    [nav release];
+}
+
+-(void)editFavoriteAddress:(FavoriteAddress *)favorite
+{
+    FavoriteAddViewController *favoriteAddViewController = [[FavoriteAddViewController alloc] initWithFavoriteToEdit:favorite];
+    [favoriteAddViewController setDelegate:self];
+    [favoriteAddViewController setFavorite:favorite];
+    
+    
+    //[managedObjectContext deleteObject:(NSManagedObject *)favorite];
     
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:favoriteAddViewController];
     [[nav navigationBar] setTintColor:[UIColor colorWithRed:26/255.0f green:96/255.0f blue:156/255.0f alpha:1.0]];
@@ -528,6 +601,7 @@
         
         [self getData];
         [[self tableView] reloadData];
+        [[[self toolbarItems] objectAtIndex:0] setEnabled:NO];
     }
     else
     {
@@ -538,6 +612,7 @@
 - (void)favoriteAddViewController:(FavoriteAddViewController *)favoriteAddViewController didAddFavorite:(FavoriteAddress *)favoriteAddress
 {
     [self dismissModalViewControllerAnimated:YES];
+    [self enableEdit];
     [self getData];
     [[self tableView] reloadData];
 }

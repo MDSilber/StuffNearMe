@@ -70,7 +70,7 @@
     [mapType setAction:@selector(changeMapType:)];
 
     
-    NSArray *items = [NSArray arrayWithObjects:mapType,flex,getDirections,nil];
+    NSArray *items = [NSArray arrayWithObjects:getDirections,flex,mapType,nil];
     UIColor *color = [UIColor colorWithRed:26/255.0f green:96/255.0f blue:156/255.0f alpha:1.0];
     [[[self navigationController] toolbar] setTintColor:color];
     [self setToolbarItems:items];
@@ -309,5 +309,6 @@
     detailsViewController = [[DetailsViewController alloc] initWithPlace:[(MapPin *)[view annotation] place] andPhoneNumber:phoneNumber andZipCode:zipCode];
     [detailsViewController setTitle:[[view annotation] title]];
     [[self navigationController] pushViewController:detailsViewController animated:YES];
+    [phoneNumber release];
 }
 @end

@@ -18,6 +18,7 @@
         UITextField *addressTextField;
         FavoriteAddress *favorite;
         id <FavoriteAddDelegate> delegate;
+@public BOOL editing;
 }
 
 @property (nonatomic, retain) FavoriteAddress *favorite;
@@ -27,6 +28,7 @@
 
 -(void)save;
 -(void)cancel;
+-(id)initWithFavoriteToEdit:(FavoriteAddress *)aFavorite;
 
 @end
 

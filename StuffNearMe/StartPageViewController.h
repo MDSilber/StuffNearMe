@@ -25,9 +25,8 @@
 @interface StartPageViewController : UIViewController<UITextFieldDelegate,CLLocationManagerDelegate,UIAlertViewDelegate, UITableViewDelegate, UITableViewDataSource>
 {
     IBOutlet UISlider *rangeSlider;
-    IBOutlet UILabel *rangeLabel, *enterSearchTermsLabel;
+    IBOutlet UILabel *rangeLabel, *enterSearchTermsLabel, *OR;
     IBOutlet UIButton *go;
-    IBOutlet UIButton *goToList;
     UIButton *choicesButton;
     IBOutlet UITextField *locationTextField, *searchTextField;
     NSArray *placesList;
@@ -57,11 +56,11 @@
 @property (nonatomic, retain) UIButton *choicesButton;
 @property (nonatomic, retain) IBOutlet UITextField *locationTextField;
 @property (nonatomic, retain) IBOutlet UITextField *searchTextField;
-@property (nonatomic, retain) IBOutlet UIButton *goToList;
 //@property (nonatomic, retain) PlaceTypeListViewController *listView;
 @property (nonatomic, retain) PlacesListViewController *placesListView;
 @property (nonatomic, retain) StuffNearMeAppDelegate *mainDelegate;
 @property (nonatomic, assign) id delegate;
+@property (nonatomic, retain, readonly) CLLocationManager *locationManager;
 
 -(IBAction)rangeChanged:(id)sender;
 -(IBAction)getPlacesPressed:(id)sender;
@@ -71,4 +70,5 @@
 -(IBAction)goToSavedAddresses:(id)sender;
 -(void)toggleKeyboardOnScreen;
 -(void)choicesButtonPressed:(id)sender;
+
 @end

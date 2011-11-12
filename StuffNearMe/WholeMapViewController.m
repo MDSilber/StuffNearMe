@@ -219,6 +219,7 @@
     [detailsViewController setTitle:[[view annotation] title]];
     [[self navigationController] pushViewController:detailsViewController animated:YES];
     [detailsViewController release];
+    [phoneNumber release];
 }
 
 -(IBAction)changeMapType:(id)sender

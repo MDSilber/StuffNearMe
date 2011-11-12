@@ -17,7 +17,20 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        }
+        editing = NO;
+    }
+    return self;
+}
+
+-(id)initWithFavoriteToEdit:(FavoriteAddress *)aFavorite
+{
+    self = [super init];
+    if(self)
+    {
+        favorite = aFavorite;
+        editing = YES;
+    }
+    
     return self;
 }
 
@@ -35,7 +48,7 @@
 {
     [[self navigationItem] setTitle:@"Add Favorite"];
     [self setDelegate:delegate];
-
+    
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(cancel)];
     [[self navigationItem ] setLeftBarButtonItem:cancelButton];
     [cancelButton release];
@@ -48,6 +61,8 @@
     [addressTextField setAutocapitalizationType:UITextAutocapitalizationTypeWords];
     
     [nameTextField becomeFirstResponder];
+    [nameTextField setText:[favorite name]];
+    [addressTextField setText:[favorite address]];
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 }
@@ -65,7 +80,7 @@
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [textField resignFirstResponder];
-
+    
     if(textField == nameTextField)
     {
         [addressTextField becomeFirstResponder];
@@ -77,11 +92,11 @@
 
 -(void)save
 {
+    NSManagedObjectContext *context = [favorite managedObjectContext];
+    
     [favorite setName:[nameTextField text]];
     [favorite setAddress:[addressTextField text]];
-                                                                                                                        
-    NSManagedObjectContext *context = [favorite managedObjectContext];
-
+    
     //Add it to database
     
     NSError *error = nil;
@@ -96,14 +111,22 @@
     }
     
     [[self delegate] favoriteAddViewController:self didAddFavorite:favorite];
+    
 }
 
 -(void)cancel
 {
     //NSLog(@"Cancel called");
-    [[favorite managedObjectContext] deleteObject:favorite];
-    
-    [[self delegate] favoriteAddViewController:self didAddFavorite:nil];
+    if(!editing)
+    {
+        [[favorite managedObjectContext] deleteObject:favorite];
+        
+        [[self delegate] favoriteAddViewController:self didAddFavorite:nil];
+    }
+    else
+    {
+        [[self delegate] favoriteAddViewController:self didAddFavorite:nil];
+    }
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -115,7 +138,7 @@
 -(void)dealloc
 {
     //NSLog(@"%@ dealloc called",[self class]);
-
+    
     [nameTextField release];
     [addressTextField release];
     [favorite release];
@@ -125,7 +148,7 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
-
+    
 }
 
 @end
